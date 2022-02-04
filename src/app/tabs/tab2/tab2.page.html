@@ -1,0 +1,325 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Date
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <span style="display: flex; margin: 5%;">
+    Find Data in a State or Federal Territory in between two dates
+  </span>
+  <ion-item>
+    <ion-label>State</ion-label>
+    <ion-select (ionChange)="selectState(value);" [(ngModel)]="value" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One">
+      <ion-select-option value="johor">Johor</ion-select-option>
+      <ion-select-option value="kedah">Kedah</ion-select-option>
+      <ion-select-option value="kelantan">Kelantan</ion-select-option>
+      <ion-select-option value="malacca">Malacca</ion-select-option>
+      <ion-select-option value="negeri_Sembilan">Negeri Sembilan</ion-select-option>
+      <ion-select-option value="pahang">Pahang</ion-select-option>
+      <ion-select-option value="penang">Penang</ion-select-option>
+      <ion-select-option value="perak">Perak</ion-select-option>
+      <ion-select-option value="perlis">Perlis</ion-select-option>
+      <ion-select-option value="selangor">Selangor</ion-select-option>
+      <ion-select-option value="terengganu">Terengganu</ion-select-option>
+      <ion-select-option value="w.p._kuala_lumpur">Kualu Lumpur</ion-select-option>
+      <ion-select-option value="w.p_labuan">Labuan</ion-select-option>
+      <ion-select-option value="w.p_putrajaya">Putrajaya</ion-select-option>
+
+    </ion-select>
+  </ion-item>
+<!--   
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Date</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+
+    
+    <ion-button fill="clear" id="open-date-input-2">
+      <ion-icon icon="calendar"></ion-icon>
+    </ion-button>
+
+     <ion-popover trigger="open-date-input-2" show-backdrop="false">
+      <ng-template>
+        <ion-datetime
+          #popoverDatetime2
+          presentation="date"
+          (ionChange)="dateValue2 = formatDate(popoverDatetime2.value)"
+        ></ion-datetime>
+      </ng-template>
+    </ion-popover> 
+
+    <ion-card>
+      <ion-datetime value="2012-12-15T13:47:20.789"></ion-datetime>
+    </ion-card> -->
+
+    <!-- <ion-item>
+      <ion-input [value]="dateValue2"></ion-input>
+      <ion-button fill="clear" id="open-date-input-2">
+        <ion-icon icon="calendar"></ion-icon>
+      </ion-button>
+      <ion-popover trigger="open-date-input-2" show-backdrop="false">
+        <ng-template>
+          <ion-datetime
+            #popoverDatetime2
+            presentation="date"
+            (ionChange)="dateValue2 = formatDate(popoverDatetime2.value)"
+          ></ion-datetime>
+        </ng-template>
+      </ion-popover>
+    </ion-item> -->
+<ion-slides>
+  <ion-slide>
+    <ion-card>
+      <ion-card-title style="margin: 2%;"> From</ion-card-title>
+      <ion-datetime  min=2021 max=2022 (ionChange)="selectDate(startDate)" [(ngModel)]="startDate" name presentation="date">
+      <ion-buttons slot="buttons">
+        <ion-button (click)="reset()" >Reset Table</ion-button>
+      </ion-buttons>
+    </ion-datetime>
+  </ion-card>
+  </ion-slide>
+  <ion-slide>
+    <ion-card>
+      <ion-card-title style="margin: 2%;"> Until </ion-card-title>
+    <ion-datetime (ionChange)="selectDate(endDate)" [(ngModel)]="endDate" name presentation="date">
+      <ion-buttons slot="buttons">
+        <ion-button (click)="confirm()">
+          <ion-icon name="search-outline"></ion-icon>
+        </ion-button>
+        <ion-button (click)="reset()">Reset Table</ion-button>
+      </ion-buttons>
+    </ion-datetime>
+  </ion-card>
+  </ion-slide>
+  </ion-slides>
+  <span style="display: flex; align-items: center; justify-content: center; margin: 0 5% 5% 5%;">
+    Swipe Calander to choose your two dates!
+  </span>
+  <ion-card *ngIf="selectOptionState" (click)="chartsMoreDetail()">
+    <ion-spinner style="margin: 45%;" *ngIf="newsLoading" name="crescent"> </ion-spinner>
+    <ion-card-subtitle style="margin: 10px 10px 0px 0px; font-size: 70%; display: flex; justify-content: end;"> detail </ion-card-subtitle>
+    <ion-card-title style="margin: 0 0 5% 2%; font-size: 75%;"> From 1/25/2020 to 12/15/2021, in {{selectedState}} there is reportedly </ion-card-title>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Total Number of Cases
+      </ion-col>
+      <ion-col>
+        {{featuredTotal}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Number of New Cases
+      </ion-col>
+      <ion-col>
+        {{featuredTotalNew}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Import Cases
+      </ion-col>
+      <ion-col>
+        {{featuredTotalImport}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Recovered Cases
+      </ion-col>
+      <ion-col>
+        {{featuredTotalRecovered}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Active Cases
+      </ion-col>
+      <ion-col>
+        {{featuredTotalActive}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Cluster Cases
+      </ion-col>
+      <ion-col>
+        {{featuredTotalCluster}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Unvaccinated
+      </ion-col>
+      <ion-col>
+        {{featuredTotalUnvax}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Partially Vaccinated
+      </ion-col>
+      <ion-col>
+        {{featuredTotalPVax}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Fully Vaccinated
+      </ion-col>
+      <ion-col>
+        {{featuredTotalFVax}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Boosted
+      </ion-col>
+      <ion-col>
+        {{featuredTotalBoost}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Child
+      </ion-col>
+      <ion-col>
+        {{featuredTotalChild}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Adolescent
+      </ion-col>
+      <ion-col>
+        {{featuredTotalAdolescent}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Adult
+      </ion-col>
+      <ion-col>
+        {{featuredTotalAdult}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Elderly
+      </ion-col>
+      <ion-col>
+        {{featuredTotalElderly}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Ages 0-4
+      </ion-col>
+      <ion-col>
+        {{featuredTotal0_4}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Ages 5-11
+      </ion-col>
+      <ion-col>
+        {{featuredTotal5_11}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Ages 12-17
+      </ion-col>
+      <ion-col>
+        {{featuredTotal12_17}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Ages 18-29
+      </ion-col>
+      <ion-col>
+        {{featuredTotal18_29}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Ages 30-39
+      </ion-col>
+      <ion-col>
+        {{featuredTotal30_39}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Ages 40-49
+      </ion-col>
+      <ion-col>
+        {{featuredTotal40_49}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Ages 50-59
+      </ion-col>
+      <ion-col>
+        {{featuredTotal50_59}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Ages 60-69
+      </ion-col>
+      <ion-col>
+        {{featuredTotal60_69}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Ages 70-79
+      </ion-col>
+      <ion-col>
+        {{featuredTotal70_79}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Ages 80 and above
+      </ion-col>
+      <ion-col>
+        {{featuredTotal80}}
+        <br>
+      </ion-col>
+    </ion-row>
+
+  </ion-card>
+</ion-content>
