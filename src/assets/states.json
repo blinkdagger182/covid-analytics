@@ -1,0 +1,84 @@
+{
+    "states": [
+            {   
+                "cases":0,
+                "id": "Johor"
+            }
+        ,
+            {   
+                "cases":0,
+                "id": "Kedah"
+            }
+        ,
+            {   
+                "cases":0,
+                "id": "Kelantan"
+            }
+        ,
+            {   
+                "cases":0,
+                "id": "Malacca"
+            }
+        ,
+            {   
+                "cases":0,
+                "id": "Negeri Sembilan"
+            }
+        ,
+            {   
+                "cases":0,
+                "id": "Pahang"
+            }
+        ,
+            {   
+                "cases":0,
+                "id": "Pulau Pinang"
+            }
+        ,
+            {   
+                "cases":0,
+                "id": "Perak"
+            }
+        ,
+            {   
+                "cases":0,
+                "id": "Perlis"
+            }
+        ,
+            {   
+                "cases":0,
+                "id": "Selangor"
+            }
+        ,
+            {   
+                "cases":0,
+                "id": "Terengganu"
+            }
+        ,
+            {   
+                "cases":0,
+                "id": "Sabah"
+            }
+        ,
+            {   
+                "cases":0,
+                "id": "Sarawak"
+            }
+        ,
+            {   
+                "cases":0,
+                "id": "W.P. Kuala Lumpur"
+            }
+        ,
+            {   
+                "cases":0,
+                "id": "W.P. Labuan"
+            }
+        ,
+            {   
+                "cases":0,
+                "id": "W.P. Putrajaya"
+            }
+        
+        ]
+}
