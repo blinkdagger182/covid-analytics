@@ -13,88 +13,241 @@
       <ion-title size="large">Covid-19 Data</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-card>
+  <!-- <ion-card>
     <ion-card-header>
       Line Chart
     </ion-card-header>
     <ion-card-content>
       <canvas #lineCanvas style="position: relative; height:20vh; width:40vw"></canvas>
     </ion-card-content>
-  </ion-card>
-  <!-- <ion-card>
-    <ion-card-header>
-      <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-      <ion-card-title>Card Title</ion-card-title>
-    </ion-card-header>
-  
-    <ion-card-content>
-      Keep close to Nature's heart... and break clear away, once in awhile,
-      and climb a mountain or spend a week in the woods. Wash your spirit clean.
-    </ion-card-content>
-  </ion-card>
-  
-  <ion-card>
-    <ion-item>
-      <ion-icon name="pin" slot="start"></ion-icon>
-      <ion-label>ion-item in a card, icon left, button right</ion-label>
-      <ion-button fill="outline" slot="end">View</ion-button>
-    </ion-item>
-  
-    <ion-card-content>
-      This is content, without any paragraph or header tags,
-      within an ion-card-content element.
-    </ion-card-content>
-  </ion-card>
-  
-  <ion-card>
-    <ion-item href="#" class="ion-activated">
-      <ion-icon name="wifi" slot="start"></ion-icon>
-      <ion-label>Card Link Item 1 activated</ion-label>
-    </ion-item>
-  
-    <ion-item href="#">
-      <ion-icon name="wine" slot="start"></ion-icon>
-      <ion-label>Card Link Item 2</ion-label>
-    </ion-item>
-  
-    <ion-item class="ion-activated">
-      <ion-icon name="warning" slot="start"></ion-icon>
-      <ion-label>Card Button Item 1 activated</ion-label>
-    </ion-item>
-  
-    <ion-item>
-      <ion-icon name="walk" slot="start"></ion-icon>
-      <ion-label>Card Button Item 2</ion-label>
-    </ion-item>
   </ion-card> -->
-<!--  
   <ion-card>
     <ion-card-header>
-      Bar Chart
+      Types of Cases in {{selectedState}}, between {{startDate}} until {{endDate}}
     </ion-card-header>
     <ion-card-content>
       <canvas #barCanvas style="position: relative; height:20vh; width:40vw"></canvas>
     </ion-card-content>
   </ion-card>
-  <ion-card>
-    <ion-card-header>
-      Doughnut Chart
-    </ion-card-header>
-    <ion-card-content>
-      <canvas #doughnutCanvas style="position: relative; height:20vh; width:40vw"></canvas>
-    </ion-card-content>
+  <ion-card >
+    <ion-spinner style="margin: 45%;" *ngIf="newsLoading" name="crescent"> </ion-spinner>
+    
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Total Number of Cases
+      </ion-col>
+      <ion-col>
+        {{featuredTotal}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Number of New Cases
+      </ion-col>
+      <ion-col>
+        {{featuredTotalNew}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Import Cases
+      </ion-col>
+      <ion-col>
+        {{featuredTotalImport}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Recovered Cases
+      </ion-col>
+      <ion-col>
+        {{featuredTotalRecovered}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Active Cases
+      </ion-col>
+      <ion-col>
+        {{featuredTotalActive}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Cluster Cases
+      </ion-col>
+      <ion-col>
+        {{featuredTotalCluster}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Unvaccinated
+      </ion-col>
+      <ion-col>
+        {{featuredTotalUnvax}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Partially Vaccinated
+      </ion-col>
+      <ion-col>
+        {{featuredTotalPVax}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Fully Vaccinated
+      </ion-col>
+      <ion-col>
+        {{featuredTotalFVax}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Boosted
+      </ion-col>
+      <ion-col>
+        {{featuredTotalBoost}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Child
+      </ion-col>
+      <ion-col>
+        {{featuredTotalChild}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Adolescent
+      </ion-col>
+      <ion-col>
+        {{featuredTotalAdolescent}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Adult
+      </ion-col>
+      <ion-col>
+        {{featuredTotalAdult}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Elderly
+      </ion-col>
+      <ion-col>
+        {{featuredTotalElderly}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Ages 0-4
+      </ion-col>
+      <ion-col>
+        {{featuredTotal0_4}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Ages 5-11
+      </ion-col>
+      <ion-col>
+        {{featuredTotal5_11}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Ages 12-17
+      </ion-col>
+      <ion-col>
+        {{featuredTotal12_17}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Ages 18-29
+      </ion-col>
+      <ion-col>
+        {{featuredTotal18_29}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Ages 30-39
+      </ion-col>
+      <ion-col>
+        {{featuredTotal30_39}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Ages 40-49
+      </ion-col>
+      <ion-col>
+        {{featuredTotal40_49}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Ages 50-59
+      </ion-col>
+      <ion-col>
+        {{featuredTotal50_59}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Ages 60-69
+      </ion-col>
+      <ion-col>
+        {{featuredTotal60_69}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Ages 70-79
+      </ion-col>
+      <ion-col>
+        {{featuredTotal70_79}}
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-left: 2%;">
+      <ion-col>
+        Ages 80 and above
+      </ion-col>
+      <ion-col>
+        {{featuredTotal80}}
+        <br>
+      </ion-col>
+    </ion-row>
+
   </ion-card>
-
-  
-
-  <ion-card class="welcome-card">
-    <ion-card-header>
-      <ion-card-subtitle></ion-card-subtitle>
-      <ion-card-title></ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <canvas #barChart></canvas>
-    </ion-card-content>
-  </ion-card> -->
-
 </ion-content>

@@ -7,16 +7,17 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <span style="display: flex; margin: 5%;">
-    Find Data in a State or Federal Territory in between two dates
-  </span>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-item>
     <ion-label>State</ion-label>
     <ion-select (ionChange)="selectState(value);" [(ngModel)]="value" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One">
+      <ion-select-option value="">Entire Malaysia</ion-select-option>
       <ion-select-option value="johor">Johor</ion-select-option>
       <ion-select-option value="kedah">Kedah</ion-select-option>
       <ion-select-option value="kelantan">Kelantan</ion-select-option>
-      <ion-select-option value="malacca">Malacca</ion-select-option>
+      <ion-select-option value="melaka">Malacca</ion-select-option>
       <ion-select-option value="negeri_Sembilan">Negeri Sembilan</ion-select-option>
       <ion-select-option value="pahang">Pahang</ion-select-option>
       <ion-select-option value="penang">Penang</ion-select-option>
@@ -30,85 +31,79 @@
 
     </ion-select>
   </ion-item>
-<!--   
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Date</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  
-
+  <ion-item>
     
+      <ion-label>Start Date</ion-label>
+    <ion-button fill="clear" id="open-date-input">
+      <ion-icon icon="calendar"></ion-icon>
+    </ion-button>
+    <div *ngIf="startDate!=0">{{featuredStartDate}}</div>
+    <ion-popover trigger="open-date-input" show-backdrop="false">
+      <ng-template>
+        <ion-datetime
+        showClearButton confirm min="2020-01-25" max="2021-12-15" #startDate (ionChange)="selectStartDate(startDate.value)"  size="cover"   presentation="date"
+        ></ion-datetime>
+      </ng-template>
+    </ion-popover>
+  </ion-item>
+
+
+  <ion-item><ion-label>End Date</ion-label>
     <ion-button fill="clear" id="open-date-input-2">
       <ion-icon icon="calendar"></ion-icon>
     </ion-button>
-
-     <ion-popover trigger="open-date-input-2" show-backdrop="false">
+    <div *ngIf="endDate!=0">{{featuredEndDate}}</div>
+    <ion-popover trigger="open-date-input-2" show-backdrop="false">
       <ng-template>
         <ion-datetime
-          #popoverDatetime2
-          presentation="date"
-          (ionChange)="dateValue2 = formatDate(popoverDatetime2.value)"
+        showClearButton showDefaultTimeLabel min="2020-01-25" max="2021-12-15"  #endDate size="cover" (ionChange)="selectEndDate(endDate.value)" name presentation="date"
         ></ion-datetime>
       </ng-template>
-    </ion-popover> 
-
-    <ion-card>
-      <ion-datetime value="2012-12-15T13:47:20.789"></ion-datetime>
-    </ion-card> -->
-
-    <!-- <ion-item>
-      <ion-input [value]="dateValue2"></ion-input>
-      <ion-button fill="clear" id="open-date-input-2">
-        <ion-icon icon="calendar"></ion-icon>
-      </ion-button>
-      <ion-popover trigger="open-date-input-2" show-backdrop="false">
-        <ng-template>
-          <ion-datetime
-            #popoverDatetime2
-            presentation="date"
-            (ionChange)="dateValue2 = formatDate(popoverDatetime2.value)"
-          ></ion-datetime>
-        </ng-template>
-      </ion-popover>
-    </ion-item> -->
-<ion-slides>
+    </ion-popover>
+  </ion-item>
+  <!-- <ion-button id="open-modal">Open Datetime Modal</ion-button>
+  <ion-modal trigger="open-modal">
+    <ng-template>
+      <ion-content>
+        <ion-datetime ></ion-datetime>
+      </ion-content>
+    </ng-template>
+  </ion-modal> -->
+  
+<!-- <ion-slides>
   <ion-slide>
     <ion-card>
       <ion-card-title style="margin: 2%;"> From</ion-card-title>
-      <ion-datetime  min=2021 max=2022 (ionChange)="selectDate(startDate)" [(ngModel)]="startDate" name presentation="date">
-      <ion-buttons slot="buttons">
-        <ion-button (click)="reset()" >Reset Table</ion-button>
-      </ion-buttons>
+      <ion-datetime min="2020-01-25" max="2021-12-15" #startDate (ionChange)="selectStartDate(startDate.value)"  size="cover"   presentation="date">
     </ion-datetime>
   </ion-card>
   </ion-slide>
   <ion-slide>
     <ion-card>
       <ion-card-title style="margin: 2%;"> Until </ion-card-title>
-    <ion-datetime (ionChange)="selectDate(endDate)" [(ngModel)]="endDate" name presentation="date">
-      <ion-buttons slot="buttons">
-        <ion-button (click)="confirm()">
-          <ion-icon name="search-outline"></ion-icon>
-        </ion-button>
-        <ion-button (click)="reset()">Reset Table</ion-button>
-      </ion-buttons>
+    <ion-datetime min="2020-01-25" max="2021-12-15" size="cover" #endDate (ionChange)="selectEndDate(endDate.value)" name presentation="date">
+    
     </ion-datetime>
   </ion-card>
   </ion-slide>
-  </ion-slides>
-  <span style="display: flex; align-items: center; justify-content: center; margin: 0 5% 5% 5%;">
+  </ion-slides> -->
+
+
+  <!-- <span style="display: flex; align-items: center; justify-content: center; margin: 5% 5% 5% 5%;">
     Swipe Calander to choose your two dates!
-  </span>
+  </span> -->
+  <ion-button (click)="pressSearchButton()" shape="round"  style="display: flex; justify-content: center; margin: 20px 40%;">
+    <ion-icon icon="search"></ion-icon> Search
+  </ion-button>
   <ion-card *ngIf="selectOptionState" (click)="chartsMoreDetail()">
-    <ion-spinner style="margin: 45%;" *ngIf="newsLoading" name="crescent"> </ion-spinner>
-    <ion-card-subtitle style="margin: 10px 10px 0px 0px; font-size: 70%; display: flex; justify-content: end;"> detail </ion-card-subtitle>
-    <ion-card-title style="margin: 0 0 5% 2%; font-size: 75%;"> From 1/25/2020 to 12/15/2021, in {{selectedState}} there is reportedly </ion-card-title>
+    <!-- <ion-spinner style="margin: 45%;" *ngIf="dataLoading" name="crescent"> </ion-spinner> -->
+    <ion-card-subtitle style="margin: 10px; font-size: 90%; display: flex; justify-content: end;"> details > </ion-card-subtitle>
+    <ion-card-title style="margin: 0 0 5% 2%; font-size: 75%;"> From {{featuredStartDate}} to {{featuredEndDate}}, in {{featuredState}} there is reportedly </ion-card-title>
     <ion-row style="margin-left: 2%;">
       <ion-col>
         Total Number of Cases
       </ion-col>
-      <ion-col>
+      <ion-col style="justify-content: flex-end; display: flex;">
         {{featuredTotal}}
         <br>
       </ion-col>
@@ -116,8 +111,8 @@
     <ion-row style="margin-left: 2%;">
       <ion-col>
         Number of New Cases
-      </ion-col>
-      <ion-col>
+      </ion-col >
+      <ion-col style="justify-content: flex-end; display: flex;">
         {{featuredTotalNew}}
         <br>
       </ion-col>
@@ -126,7 +121,7 @@
       <ion-col>
         Import Cases
       </ion-col>
-      <ion-col>
+      <ion-col style="justify-content: flex-end; display: flex;">
         {{featuredTotalImport}}
         <br>
       </ion-col>
@@ -135,7 +130,7 @@
       <ion-col>
         Recovered Cases
       </ion-col>
-      <ion-col>
+      <ion-col style="justify-content: flex-end; display: flex;">
         {{featuredTotalRecovered}}
         <br>
       </ion-col>
@@ -144,7 +139,7 @@
       <ion-col>
         Active Cases
       </ion-col>
-      <ion-col>
+      <ion-col style="justify-content: flex-end; display: flex;">
         {{featuredTotalActive}}
         <br>
       </ion-col>
@@ -153,7 +148,7 @@
       <ion-col>
         Cluster Cases
       </ion-col>
-      <ion-col>
+      <ion-col style="justify-content: flex-end; display: flex;">
         {{featuredTotalCluster}}
         <br>
       </ion-col>
@@ -162,7 +157,7 @@
       <ion-col>
         Unvaccinated
       </ion-col>
-      <ion-col>
+      <ion-col style="justify-content: flex-end; display: flex;">
         {{featuredTotalUnvax}}
         <br>
       </ion-col>
@@ -171,7 +166,7 @@
       <ion-col>
         Partially Vaccinated
       </ion-col>
-      <ion-col>
+      <ion-col style="justify-content: flex-end; display: flex;">
         {{featuredTotalPVax}}
         <br>
       </ion-col>
@@ -180,7 +175,7 @@
       <ion-col>
         Fully Vaccinated
       </ion-col>
-      <ion-col>
+      <ion-col style="justify-content: flex-end; display: flex;">
         {{featuredTotalFVax}}
         <br>
       </ion-col>
@@ -189,7 +184,7 @@
       <ion-col>
         Boosted
       </ion-col>
-      <ion-col>
+      <ion-col style="justify-content: flex-end; display: flex;">
         {{featuredTotalBoost}}
         <br>
       </ion-col>
@@ -198,7 +193,7 @@
       <ion-col>
         Child
       </ion-col>
-      <ion-col>
+      <ion-col style="justify-content: flex-end; display: flex;">
         {{featuredTotalChild}}
         <br>
       </ion-col>
@@ -207,7 +202,7 @@
       <ion-col>
         Adolescent
       </ion-col>
-      <ion-col>
+      <ion-col style="justify-content: flex-end; display: flex;">
         {{featuredTotalAdolescent}}
         <br>
       </ion-col>
@@ -216,7 +211,7 @@
       <ion-col>
         Adult
       </ion-col>
-      <ion-col>
+      <ion-col style="justify-content: flex-end; display: flex;">
         {{featuredTotalAdult}}
         <br>
       </ion-col>
@@ -225,7 +220,7 @@
       <ion-col>
         Elderly
       </ion-col>
-      <ion-col>
+      <ion-col style="justify-content: flex-end; display: flex;">
         {{featuredTotalElderly}}
         <br>
       </ion-col>
@@ -234,7 +229,7 @@
       <ion-col>
         Ages 0-4
       </ion-col>
-      <ion-col>
+      <ion-col style="justify-content: flex-end; display: flex;">
         {{featuredTotal0_4}}
         <br>
       </ion-col>
@@ -243,7 +238,7 @@
       <ion-col>
         Ages 5-11
       </ion-col>
-      <ion-col>
+      <ion-col style="justify-content: flex-end; display: flex;">
         {{featuredTotal5_11}}
         <br>
       </ion-col>
@@ -252,7 +247,7 @@
       <ion-col>
         Ages 12-17
       </ion-col>
-      <ion-col>
+      <ion-col style="justify-content: flex-end; display: flex;">
         {{featuredTotal12_17}}
         <br>
       </ion-col>
@@ -261,7 +256,7 @@
       <ion-col>
         Ages 18-29
       </ion-col>
-      <ion-col>
+      <ion-col style="justify-content: flex-end; display: flex;">
         {{featuredTotal18_29}}
         <br>
       </ion-col>
@@ -270,7 +265,7 @@
       <ion-col>
         Ages 30-39
       </ion-col>
-      <ion-col>
+      <ion-col style="justify-content: flex-end; display: flex;"> 
         {{featuredTotal30_39}}
         <br>
       </ion-col>
@@ -279,7 +274,7 @@
       <ion-col>
         Ages 40-49
       </ion-col>
-      <ion-col>
+      <ion-col style="justify-content: flex-end; display: flex;">
         {{featuredTotal40_49}}
         <br>
       </ion-col>
@@ -288,7 +283,7 @@
       <ion-col>
         Ages 50-59
       </ion-col>
-      <ion-col>
+      <ion-col style="justify-content: flex-end; display: flex;">
         {{featuredTotal50_59}}
         <br>
       </ion-col>
@@ -297,7 +292,7 @@
       <ion-col>
         Ages 60-69
       </ion-col>
-      <ion-col>
+      <ion-col style="justify-content: flex-end; display: flex;">
         {{featuredTotal60_69}}
         <br>
       </ion-col>
@@ -306,7 +301,7 @@
       <ion-col>
         Ages 70-79
       </ion-col>
-      <ion-col>
+      <ion-col style="justify-content: flex-end; display: flex;">
         {{featuredTotal70_79}}
         <br>
       </ion-col>
@@ -315,11 +310,56 @@
       <ion-col>
         Ages 80 and above
       </ion-col>
-      <ion-col>
+      <ion-col style="justify-content: flex-end; display: flex;">
         {{featuredTotal80}}
         <br>
       </ion-col>
     </ion-row>
 
   </ion-card>
+  <ion-card >
+    <!-- <ion-spinner style="margin: 45%;" *ngIf="dataLoading" name="crescent"> </ion-spinner> -->
+    <div style="display: flex; justify-content: space-between;">
+    <ion-card-header style="display: flex; ">States</ion-card-header>
+    <ion-card-header (click)="sortByCases()" style="display: flex; justify-content: end;">Sort By Cases</ion-card-header>
+    </div>
+    <ion-row style="margin-left: 2%; display: flex;"  *ngFor="let state of states">
+      <ion-col (click)="chartsMoreDetail(state.id)">
+        {{state.id}}
+      </ion-col>
+      <ion-col style="display: flex; justify-content: end; padding: 10px 10px;">
+        {{state.cases}}
+        <br>
+      </ion-col>
+    </ion-row>
+
+
+    <!-- <ion-accordion-group >
+      <ion-accordion >
+        <ion-item slot="header">
+          <ion-label>States</ion-label>
+        </ion-item>
+        
+      <ion-item>
+        <ion-list  slot="content">
+          <ion-item *ngFor='let state of states.states'> 
+            <ion-label>{{state.id}}</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>{{state.cases}}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-item>
+      </ion-accordion>
+    </ion-accordion-group> -->
+  </ion-card>
+  
+  <!-- <div *ngFor='let state of states.states'>
+    <ion-card>
+      <ion-item >
+        {{state.id}}
+      </ion-item>
+    </ion-card>
+  </div> -->
+  
 </ion-content>

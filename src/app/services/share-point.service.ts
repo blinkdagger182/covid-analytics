@@ -34,13 +34,16 @@ dataByState(state:any){
 }
 
 dataByDates(startDate:any, endDate:any){
-  return this.http.get( this.HTTP_API_ENDPOINT + '/api/by//api/by/date?startDate='+ startDate + '&endDate=' + endDate +'&inclusive=true%2Cfalse?name=')
+  return this.http.get( this.HTTP_API_ENDPOINT + '/api/by/date?startDate='+ startDate + '&endDate=' + endDate +'&inclusive=true%2Cfalse?name=')
 }
 
 dataByDatesAndState(startDate:any, endDate:any, state:any){
-  return this.http.get( this.HTTP_API_ENDPOINT + '/api/by//api/by/date?startDate='+ startDate + '&endDate=' + endDate + '&state='+ state +'&inclusive=true%2Cfalse?name=')
+  console.log("startDate", startDate)
+  console.log("endDate", endDate)
+  return this.http.get( this.HTTP_API_ENDPOINT + '/api/by/date?startDate='+ startDate + '&endDate=' + endDate + '&state='+ state +'&inclusive=true%2Cfalse')
 }
-
+// http://localhost:3030/api/by/date?startDate=2020-01-25&endDate=2021-01-01&state=melaka&inclusive=true%2Cfalse
+// https://4992-202-188-48-242.ngrok.io/api/by/date?startDate=2020-01-25&endDate=2021-01-01&state=melaka&inclusive=true%2Cfalse
 dateGlobal(){
   return this.http.get('http://localhost:3030/api/by/state?name=')
 }
