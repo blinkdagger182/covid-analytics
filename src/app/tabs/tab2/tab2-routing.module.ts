@@ -8,8 +8,12 @@ const routes: Routes = [
     path: '',
     component: Tab2Page,
   },
+  // {
+  //   path: '/charts',
+  //   component: ChartsPage,
+  // },
   {
-    path: '/charts',
+    path: '/charts/:id',
     component: ChartsPage,
   }
 ];
