@@ -4,6 +4,12 @@ import { RouterOutlet, Router, ActivationStart, ActivatedRoute  } from '@angular
 import { Location } from '@angular/common'
 import { NavController } from '@ionic/angular';
 import { SharePointService } from 'src/app/services/share-point.service';
+import * as _moment from 'moment';
+import {default as _rollupMoment, Moment} from 'moment';
+import { HttpClient } from '@angular/common/http';
+// import from './../../../../..states.json'
+// let format = require("date-fns/format");
+const moment = _rollupMoment || _moment;
 // Chart.register(...registerables);
 
 @Component({
@@ -73,10 +79,11 @@ export class ChartsPage implements OnInit{
   featuredEndDate:any;
   featuredState:any;
   dataLoading:any;
-
+  showedState:any
   sortedListOfStates:any
   sortedByCases:any;
   sortedByState:any;
+  
 
   ngOnInit(){
     // this.readJson();
@@ -87,41 +94,74 @@ export class ChartsPage implements OnInit{
     let id = this.route.snapshot.paramMap.get('id')
     this.startDate = this.route.snapshot.paramMap.get('startDate')
     this.endDate = this.route.snapshot.paramMap.get('endDate')
+    this.featuredStartDate=moment(this.startDate).format('MMMM Do YYYY')
+    this.featuredEndDate=moment(this.endDate).format('MMMM Do YYYY')
     console.log(id)
-    if (id==''){}
-    this.selectedState=''
-    if (id=='Johor')
-    this.selectedState='johor'
-    else if (id=='Kedah')
-    this.selectedState='kedah'
-    else if (id=='Kelantan')
-    this.selectedState='kelantan'
-    else if (id=='Malacca')
-    this.selectedState='melaka'
-    else if (id=='Negeri Sembilan')
-    this.selectedState='negeri_sembilan'
-    else if (id=='Pahang')
-    this.selectedState='pahang'
-    else if (id=='Pulau Pinang')
-    this.selectedState='pulau_pinang'
-    else if (id=='Perak')
-    this.selectedState='perak'
-    else if (id=='Perlis')
-    this.selectedState='perlis'
-    else if (id=='Selangor')
-    this.selectedState='selangor'
-    else if (id=='Terengganu')
-    this.selectedState='terengganu'
-    else if (id=='W.P. Kuala Lumpur')
-    this.selectedState='w.p._kuala_lumpur'
-    else if (id=='W.P. Putrajaya')
-    this.selectedState='"w.p_labuan'
-    else if (id=='W.P. Putrajaya')
-    this.selectedState='w.p_putrajaya'
+    if (id=='Johor'){
+      this.selectedState='johor'
+      this.showedState='Johor'
+    }
+    if (id==''){
+      this.selectedState=''
+      this.showedState='Malaysia'
+    }
+    else if (id=='Kedah'){
+      this.selectedState='kedah'
+      this.showedState='Kedah'
+    }
+    else if (id=='Kelantan'){
+      this.selectedState='kelantan'
+      this.showedState='Kelantan'
+    }
+    else if (id=='Malacca'){
+      this.selectedState='melaka'
+      this.showedState='Malacca'
+    }
+    else if (id=='Negeri Sembilan'){
+      this.selectedState='negeri_sembilan'
+      this.showedState='Negeri Sembilan'
+    }
+    else if (id=='Pahang'){
+      this.selectedState='pahang'
+      this.showedState='Pahang'
+    }
+    else if (id=='Pulau Pinang'){
+      this.selectedState='pulau_pinang'
+      this.showedState='Pulau Pinang'
+    }
+    else if (id=='Perak'){
+      this.selectedState='perak'
+      this.showedState='Perak'
+    }
+    else if (id=='Perlis'){
+      this.selectedState='perlis'
+      this.showedState='Perlis'
+    }
+    else if (id=='Selangor'){
+      this.selectedState='selangor'
+      this.showedState='Selangor'
+    }
+    else if (id=='Terengganu'){
+      this.selectedState='terengganu'
+      this.showedState='Terengganu'
+    }
+    else if (id=='W.P. Kuala Lumpur'){
+      this.selectedState='w.p._kuala_lumpur'
+      this.showedState='W.P. Kuala Lumpur'
+    }
+    else if (id=='W.P. Labuan'){
+      this.selectedState='w.p_labuan'
+      this.showedState='W.P. labuan'
+    }
+    else if (id=='W.P. Putrajaya'){
+      this.selectedState='w.p_putrajaya'
+      this.showedState='W.P. Putrajaya'
+    }
     console.log("chartSelectedState", this.selectedState)
     // this.getCovidStatsByDatesAndState(this.startDate, this.endDate, this.selectedState)
     // console.log("featuredTotalNew", this.featuredTotalNew)
     this.barChartCard()
+    console.log("dataLoading",this.dataLoading)
     // this.linechart()
   }
   async barChartCard(){
@@ -246,7 +286,8 @@ async getCovidStatsByDatesAndState(startDate:any, endDate:any, state:any){
           this.dataLoading=false
         }
       }
-      
+      console.log("dataLoading",this.dataLoading)
+    this.dataLoading=false;
     }
   })
 }

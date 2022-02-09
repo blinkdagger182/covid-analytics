@@ -412,7 +412,61 @@ async pressSearchButton(){
   //     this.featuredEndDate=moment(this.endDate).format('MMMM Do YYYY')
   //   }
   // }
+  // if (this.startDate>this.endDate){
+  //   await this.presentEndDateToast()
+  // }
+  // else if (this.startDate && this.endDate) {
+  //   if (!this.selectedState){
+  //     this.selectedState=''
+  //   }
+  //   await this.readJson();
+  //   console.log("this.states", this.states)
+  //   console.log("state", this.selectState)
+  //   console.log("endDate", this.startDate)
+  //   console.log("endDate", this.endDate)
+  //   await this.getCovidStatsByDatesAndState(this.startDate, this.endDate, this.selectedState)
+  //   this.selectOptionState=true
+  //   console.log(this.featuredTotal)
+  // }
+  // else if (this.startDate==0 && this.endDate==0 && !this.selectedState){
+  //   this.selectedState=''
+  //   this.featuredState='Malaysia'
+  //   this.startDate='2020-01-25';
+  //   this.endDate='2021-12-15';
+  //   this.featuredStartDate=moment(this.startDate).format('MMMM Do YYYY')
+  //   this.featuredEndDate=moment(this.endDate).format('MMMM Do YYYY')
+  //   this.selectOptionState=true
+  //   this.dataLoading=true;
+  //   await this.readJson();
+  //   console.log("this.states", this.states)
+  //   await this.getCovidStatsByDatesAndState(this.startDate, this.endDate, this.selectedState)
+  // }
+  this.dataLoading=true
+  if (this.startDate == 0 || this.endDate == 0){
+    this.dataLoading=false
+    await this.presentDateToast()
+    // if (!this.selectedState){
+    //   await this.presentStateToast()
+    //   this.dataLoading=false
+    // }
+    if (this.startDate && this.endDate == 0){
+      await this.presentSelectEndDateToast()
+      this.dataLoading=false
+    }
+    else if (this.startDate == 0 && this.endDate){
+      await this.presentSelectEndDateToast()
+      this.dataLoading=false
+    }
+    else {
+      this.startDate='2020-01-25';
+      this.endDate='2021-12-15';
+      this.featuredStartDate=moment(this.startDate).format('MMMM Do YYYY')
+      this.featuredEndDate=moment(this.endDate).format('MMMM Do YYYY')
+    }
+  }
+  
   if (this.startDate>this.endDate){
+    this.dataLoading=false
     await this.presentEndDateToast()
   }
   else if (this.startDate && this.endDate) {
@@ -424,10 +478,13 @@ async pressSearchButton(){
     console.log("state", this.selectState)
     console.log("endDate", this.startDate)
     console.log("endDate", this.endDate)
+    // this.dataLoading=true
     await this.getCovidStatsByDatesAndState(this.startDate, this.endDate, this.selectedState)
     this.selectOptionState=true
+    this.dataLoading=false
     console.log(this.featuredTotal)
   }
+  
   else if (this.startDate==0 && this.endDate==0 && !this.selectedState){
     this.selectedState=''
     this.featuredState='Malaysia'
@@ -436,10 +493,12 @@ async pressSearchButton(){
     this.featuredStartDate=moment(this.startDate).format('MMMM Do YYYY')
     this.featuredEndDate=moment(this.endDate).format('MMMM Do YYYY')
     this.selectOptionState=true
-    this.dataLoading=true;
+    // this.dataLoading=true;
+    
     await this.readJson();
     console.log("this.states", this.states)
     await this.getCovidStatsByDatesAndState(this.startDate, this.endDate, this.selectedState)
+    this.dataLoading=false
   }
 }
 
