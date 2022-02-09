@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 // import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
+// import { rejects } from 'assert';
 
 @Injectable({
   providedIn: 'root'
@@ -38,9 +39,14 @@ dataByDates(startDate:any, endDate:any){
 }
 
 dataByDatesAndState(startDate:any, endDate:any, state:any){
+  return new Promise ((resolve,reject)=>{
+    this.http.get( this.HTTP_API_ENDPOINT + '/api/by/date?startDate='+ startDate + '&endDate=' + endDate + '&state='+ state +'&inclusive=true%2Cfalse').subscribe((data)=>{
+      resolve(data)
+    })
+  })
+  
   console.log("startDate", startDate)
   console.log("endDate", endDate)
-  return this.http.get( this.HTTP_API_ENDPOINT + '/api/by/date?startDate='+ startDate + '&endDate=' + endDate + '&state='+ state +'&inclusive=true%2Cfalse')
 }
 // http://localhost:3030/api/by/date?startDate=2020-01-25&endDate=2021-01-01&state=melaka&inclusive=true%2Cfalse
 // https://4992-202-188-48-242.ngrok.io/api/by/date?startDate=2020-01-25&endDate=2021-01-01&state=melaka&inclusive=true%2Cfalse

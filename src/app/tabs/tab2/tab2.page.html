@@ -95,7 +95,7 @@
   <ion-button (click)="pressSearchButton()" shape="round"  style="display: flex; justify-content: center; margin: 20px 40%;">
     <ion-icon icon="search"></ion-icon> Search
   </ion-button>
-  <ion-card *ngIf="selectOptionState" (click)="chartsMoreDetail()">
+  <ion-card (click)="chartsMoreDetail('')" *ngIf="selectOptionState">
     <!-- <ion-spinner style="margin: 45%;" *ngIf="dataLoading" name="crescent"> </ion-spinner> -->
     <ion-card-subtitle style="margin: 10px; font-size: 90%; display: flex; justify-content: end;"> details > </ion-card-subtitle>
     <ion-card-title style="margin: 0 0 5% 2%; font-size: 75%;"> From {{featuredStartDate}} to {{featuredEndDate}}, in {{featuredState}} there is reportedly </ion-card-title>
@@ -317,11 +317,11 @@
     </ion-row>
 
   </ion-card>
-  <ion-card >
+  <ion-card *ngIf="selectOptionState">
     <!-- <ion-spinner style="margin: 45%;" *ngIf="dataLoading" name="crescent"> </ion-spinner> -->
     <div style="display: flex; justify-content: space-between;">
     <ion-card-header style="display: flex; ">States</ion-card-header>
-    <ion-card-header (click)="sortByCases()" style="display: flex; justify-content: end;">Sort By Cases</ion-card-header>
+    <ion-card-header *ngIf="selectOptionState"  (click)="sortByCases()" style="display: flex; justify-content: end;">Sort By Cases</ion-card-header>
     </div>
     <ion-row style="margin-left: 2%; display: flex;"  *ngFor="let state of states">
       <ion-col (click)="chartsMoreDetail(state.id)">

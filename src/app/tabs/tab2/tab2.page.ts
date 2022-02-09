@@ -208,7 +208,8 @@ async getCovidStatsByState(state){
 }
 
 async getCovidStatsByDatesAndState(startDate:any, endDate:any, state:any){
-  this.sharepoint.dataByDatesAndState(startDate, endDate, state).subscribe(result=>{
+  // this.sharepoint.dataByDatesAndState(startDate, endDate, state).subscribe(result=>{
+this.sharepoint.dataByDatesAndState(startDate, endDate, state).then((result)=>{
     if (result!=null){
     this.covidByState=result
     this.featuredTotal=0;
@@ -236,7 +237,7 @@ async getCovidStatsByDatesAndState(startDate:any, endDate:any, state:any){
     this.featuredTotal70_79=0
     this.featuredTotal80=0
     this.featuredTotal=this.covidByState[this.covidByState.length-1].cases.active
-    console.log(result)
+    console.log(this.covidByState)
     console.log("this.covidByState", this.covidByState)
     for (let i:any=0; i<=this.covidByState.length; i++){
       // this.featuredTotal=this.featuredTotal+this.covidByState[i].cases.new

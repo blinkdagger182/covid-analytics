@@ -3,7 +3,6 @@ import { Chart, registerables } from 'chart.js';
 import { RouterOutlet, Router, ActivationStart, ActivatedRoute  } from '@angular/router';
 import { Location } from '@angular/common'
 import { NavController } from '@ionic/angular';
-import { Tab2Page } from './../../tab2/tab2.page';
 import { SharePointService } from 'src/app/services/share-point.service';
 // Chart.register(...registerables);
 
@@ -22,7 +21,6 @@ export class ChartsPage implements OnInit{
 
 
   constructor(private navCtrl: NavController, private route: ActivatedRoute, private router: Router, public sharepoint:SharePointService, private location: Location) {
-    
     Chart.register(...registerables)
   }
   data:any
@@ -38,7 +36,7 @@ export class ChartsPage implements OnInit{
   covidByDates;
   featuredStats:any;
   featuredTotal:any;
-  id:any
+  id:any;
   sub:any;
   featuredTotalNew:any;
   featuredTotalImport:any;
@@ -80,15 +78,18 @@ export class ChartsPage implements OnInit{
   sortedByCases:any;
   sortedByState:any;
 
-  async ngOnInit(){
+  ngOnInit(){
     // this.readJson();
     // this.sharepoint.dataByState('2022-01-31').subscribe(result=>{
     //   console.log(result)
     // })
+    this.dataLoading=true;
     let id = this.route.snapshot.paramMap.get('id')
     this.startDate = this.route.snapshot.paramMap.get('startDate')
     this.endDate = this.route.snapshot.paramMap.get('endDate')
     console.log(id)
+    if (id==''){}
+    this.selectedState=''
     if (id=='Johor')
     this.selectedState='johor'
     else if (id=='Kedah')
@@ -118,15 +119,13 @@ export class ChartsPage implements OnInit{
     else if (id=='W.P. Putrajaya')
     this.selectedState='w.p_putrajaya'
     console.log("chartSelectedState", this.selectedState)
-    await this.getCovidStatsByDatesAndState(this.startDate, this.endDate, this.selectedState)
-    console.log("featuredTotalNew", this.featuredTotalNew)
-    await this.barChartCard()
+    // this.getCovidStatsByDatesAndState(this.startDate, this.endDate, this.selectedState)
+    // console.log("featuredTotalNew", this.featuredTotalNew)
+    this.barChartCard()
     // this.linechart()
-    
   }
   async barChartCard(){
-    // await this.getCovidStatsByDatesAndState(this.startDate, this.endDate, this.selectedState)
-    
+    await this.getCovidStatsByDatesAndState(this.startDate, this.endDate, this.selectedState)
     console.log("chartdataa", this.featuredTotalBoost)
     this.barChart = new Chart(this.barCanvas.nativeElement, {
       type: "bar",
@@ -135,8 +134,10 @@ export class ChartsPage implements OnInit{
         datasets: [
           {
             label: "Types of Cases",
-            data: [this.featuredTotalNew,this.featuredTotalImport, this.featuredTotalRecovered, this.featuredTotalActive,
-               this.featuredTotalCluster, this.featuredTotalUnvax, this.featuredTotalPVax,  this.featuredTotalFVax, this.featuredTotalBoost],
+            data: [
+              this.featuredTotalNew, this.featuredTotalImport, this.featuredTotalRecovered, this.featuredTotalActive,
+               this.featuredTotalCluster, this.featuredTotalUnvax, this.featuredTotalPVax,  this.featuredTotalFVax, this.featuredTotalBoost
+             ],
             backgroundColor: [
               "rgba(255, 99, 132, 0.2)",
               "rgba(54, 162, 235, 0.2)",
@@ -184,75 +185,69 @@ goBack(){
 }
 
 async getCovidStatsByDatesAndState(startDate:any, endDate:any, state:any){
-  this.sharepoint.dataByDatesAndState(startDate, endDate, state).subscribe(result=>{
+  await this.sharepoint.dataByDatesAndState(startDate, endDate, state).then((result)=>{
     if (result!=null){
-    this.covidByState=result
-    this.featuredTotal=0;
-    this.featuredTotalNew=0;
-    this.featuredTotalImport=0
-    this.featuredTotalRecovered=0
-    this.featuredTotalActive=0
-    this.featuredTotalCluster=0
-    this.featuredTotalUnvax=0
-    this.featuredTotalPVax=0
-    this.featuredTotalFVax=0
-    this.featuredTotalBoost=0
-    this.featuredTotalChild=0
-    this.featuredTotalAdolescent=0
-    this.featuredTotalAdult=0
-    this.featuredTotalElderly=0
-    this.featuredTotal0_4=0
-    this.featuredTotal5_11=0
-    this.featuredTotal12_17=0
-    this.featuredTotal18_29=0
-    this.featuredTotal30_39=0
-    this.featuredTotal40_49=0
-    this.featuredTotal50_59=0
-    this.featuredTotal60_69=0
-    this.featuredTotal70_79=0
-    this.featuredTotal80=0
-    this.featuredTotal=this.covidByState[this.covidByState.length-1].cases.active
-    console.log(result)
-    console.log("this.covidByState", this.covidByState)
-    for (let i:any=0; i<=this.covidByState.length; i++){
-      // this.featuredTotal=this.featuredTotal+this.covidByState[i].cases.new
-      this.featuredTotalNew+=this.covidByState[i].cases.new
-      this.featuredTotalActive+=this.covidByState[i].cases.active
-      this.featuredTotalImport+=this.covidByState[i].cases.import
-      this.featuredTotalRecovered+=this.covidByState[i].cases.recovered
-      this.featuredTotalCluster+=this.covidByState[i].cases.cluster
-      this.featuredTotalUnvax+=this.covidByState[i].cases.unvax
-      this.featuredTotalPVax+=this.covidByState[i].cases.pvax
-      this.featuredTotalFVax+=this.covidByState[i].cases.fvax
-      this.featuredTotalBoost+=this.covidByState[i].cases.boost
-      this.featuredTotalChild+=this.covidByState[i].cases.child
-      this.featuredTotalAdolescent+=this.covidByState[i].cases.adolescent
-      this.featuredTotalAdult+=this.covidByState[i].cases.adult
-      this.featuredTotalElderly+=this.covidByState[i].cases.elderly
-      this.featuredTotal0_4+=this.covidByState[i].cases.cases_0_4
-      this.featuredTotal5_11+=this.covidByState[i].cases.cases_5_11
-      this.featuredTotal12_17+=this.covidByState[i].cases.cases_12_17
-      this.featuredTotal18_29+=this.covidByState[i].cases.cases_18_29
-      this.featuredTotal30_39+=this.covidByState[i].cases.cases_30_39
-      this.featuredTotal40_49+=this.covidByState[i].cases.cases_40_49
-      this.featuredTotal50_59+=this.covidByState[i].cases.cases_50_59
-      this.featuredTotal60_69+=this.covidByState[i].cases.cases_60_69
-      this.featuredTotal70_79+=this.covidByState[i].cases.cases_70_79
-      this.featuredTotal80+=this.covidByState[i].cases.cases_80
-    }}
-    else {
-      // this.presentAlert()
+      this.covidByState=result
+      this.featuredTotal=0;
+      this.featuredTotalNew=0;
+      this.featuredTotalImport=0
+      this.featuredTotalRecovered=0
+      this.featuredTotalActive=0
+      this.featuredTotalCluster=0
+      this.featuredTotalUnvax=0
+      this.featuredTotalPVax=0
+      this.featuredTotalFVax=0
+      this.featuredTotalBoost=0
+      this.featuredTotalChild=0
+      this.featuredTotalAdolescent=0
+      this.featuredTotalAdult=0
+      this.featuredTotalElderly=0
+      this.featuredTotal0_4=0
+      this.featuredTotal5_11=0
+      this.featuredTotal12_17=0
+      this.featuredTotal18_29=0
+      this.featuredTotal30_39=0
+      this.featuredTotal40_49=0
+      this.featuredTotal50_59=0
+      this.featuredTotal60_69=0
+      this.featuredTotal70_79=0
+      this.featuredTotal80=0
+      this.featuredTotal=this.covidByState[this.covidByState.length-1].cases.active
+      console.log(this.covidByState)
+      console.log("this.covidByState", this.covidByState)
+      for (let i:any=0; i<=this.covidByState.length; i++){
+        // this.featuredTotal=this.featuredTotal+this.covidByState[i].cases.new
+        this.featuredTotalNew+=this.covidByState[i].cases.new
+        this.featuredTotalActive+=this.covidByState[i].cases.active
+        this.featuredTotalImport+=this.covidByState[i].cases.import
+        this.featuredTotalRecovered+=this.covidByState[i].cases.recovered
+        this.featuredTotalCluster+=this.covidByState[i].cases.cluster
+        this.featuredTotalUnvax+=this.covidByState[i].cases.unvax
+        this.featuredTotalPVax+=this.covidByState[i].cases.pvax
+        this.featuredTotalFVax+=this.covidByState[i].cases.fvax
+        this.featuredTotalBoost+=this.covidByState[i].cases.boost
+        this.featuredTotalChild+=this.covidByState[i].cases.child
+        this.featuredTotalAdolescent+=this.covidByState[i].cases.adolescent
+        this.featuredTotalAdult+=this.covidByState[i].cases.adult
+        this.featuredTotalElderly+=this.covidByState[i].cases.elderly
+        this.featuredTotal0_4+=this.covidByState[i].cases.cases_0_4
+        this.featuredTotal5_11+=this.covidByState[i].cases.cases_5_11
+        this.featuredTotal12_17+=this.covidByState[i].cases.cases_12_17
+        this.featuredTotal18_29+=this.covidByState[i].cases.cases_18_29
+        this.featuredTotal30_39+=this.covidByState[i].cases.cases_30_39
+        this.featuredTotal40_49+=this.covidByState[i].cases.cases_40_49
+        this.featuredTotal50_59+=this.covidByState[i].cases.cases_50_59
+        this.featuredTotal60_69+=this.covidByState[i].cases.cases_60_69
+        this.featuredTotal70_79+=this.covidByState[i].cases.cases_70_79
+        this.featuredTotal80+=this.covidByState[i].cases.cases_80
+        if (i=this.covidByState.length){
+          console.log("data after loading",this.covidByState)
+          console.log("dataLoading",this.dataLoading)
+          this.dataLoading=false
+        }
+      }
+      
     }
-    console.log(this.featuredTotal)
-    console.log(this.xlabels)
-    this.stateLoading=false
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve('resolved');
-        console.log("resolved")
-        // this.dataLoading=false;
-      }, 1000);
-    })
   })
 }
 }
